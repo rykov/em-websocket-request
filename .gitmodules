@@ -1,0 +1,3 @@
+[submodule "lib/em-ws-request/vendor/web-socket-ruby"]
+	path = lib/em-ws-request/vendor/web-socket-ruby
+	url = git@github.com:rykov/web-socket-ruby.git
