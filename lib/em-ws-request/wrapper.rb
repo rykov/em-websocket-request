@@ -28,6 +28,9 @@ module EventMachine
       return str
     end
 
+    # Used for Sec-WebSocket-Key and Sec-WebSocket-Accept auth
+    public :security_digest, :generate_key
+
   private
     FRAME_TYPES = {
       :continuation => 0,

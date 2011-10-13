@@ -60,11 +60,12 @@ module EventMachine
     def build_request
       head = super
       if websocket?
+        @sec_websocket_key = @wswrapper.generate_key
         head.delete_if { |k, v| !%w(host).include?(k) }
         head['upgrade'] = 'websocket'
         head['connection'] = 'Upgrade'
         head['origin'] = @req.uri.host
-        head['Sec-WebSocket-Key'] = 'dGhlIHNhbXBsZSBub25jZQ=='
+        head['Sec-WebSocket-Key'] = @sec_websocket_key
         head['Sec-WebSocket-Version'] = PROTOCOL_VERSION
       end
       head
@@ -74,11 +75,16 @@ module EventMachine
       super
       if websocket?
         p [:parse_response_header, :WEBSOCKET]
-        if @response_header.status == 101
+        if @response_header.status != 101
+
+          fail "websocket handshake failed (not status 101)"
+        elsif @wswrapper.security_digest(@sec_websocket_key) !=
+              @response_header['SEC_WEBSOCKET_ACCEPT']
+
+          fail "websocket handshake failed (mismatched key)"
+        else
           @state = :websocket
           succeed
-        else
-          fail "websocket handshake failed"
         end
       end
     end
