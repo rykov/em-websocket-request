@@ -74,7 +74,7 @@ module EventMachine
     def parse_response_header(header, version, status)
       super
       if websocket?
-        p [:parse_response_header, :WEBSOCKET]
+        # p [:parse_response_header, :WEBSOCKET]
         if @response_header.status != 101
 
           fail "websocket handshake failed (not status 101)"
