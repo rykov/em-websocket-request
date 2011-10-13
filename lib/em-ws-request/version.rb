@@ -1,3 +1,3 @@
 module EventMachine
-  WS_REQUEST_VERSION = "0.0.2"
+  WS_REQUEST_VERSION = "0.0.3"
 end

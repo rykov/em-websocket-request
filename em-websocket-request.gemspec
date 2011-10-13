@@ -8,8 +8,10 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{EventMachine WebSocket client}
   gem.homepage      = ""
 
+  gem.files         = `git ls-files`.split("\n") +
+                      %w(lib/em-ws-request/vendor/web-socket-ruby/lib/web_socket.rb)
+
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  gem.files         = `git ls-files`.split("\n")
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.name          = "em-websocket-request"
   gem.require_paths = ["lib"]
