@@ -28,6 +28,12 @@ module EventMachine
       return str
     end
 
+    # Called on a CLOSE frame
+    def close(by_peer = false)
+      super(by_peer)
+      @client.unbind
+    end
+
     # Used for Sec-WebSocket-Key and Sec-WebSocket-Accept auth
     public :security_digest, :generate_key
 

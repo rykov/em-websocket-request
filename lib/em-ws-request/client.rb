@@ -88,6 +88,20 @@ module EventMachine
         end
       end
     end
+
+    #### DISCONNECT ####
+    def disconnect(&blk)
+      @disconnect = blk
+    end
+
+    def unbind(reason = nil)
+      if state == :stream || state == :websocket # FIXME
+        @disconnect.call(self) if @disconnect
+        on_error(reason) # TODO: Should we really barf on unbind?
+      else
+        super(reason)
+      end
+    end
   end
 end
 
