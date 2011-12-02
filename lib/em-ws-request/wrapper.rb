@@ -8,9 +8,9 @@ module EventMachine
       @web_socket_version = version
     end
 
-    def send_frame(type, data)
-      opcode = type_to_opcode(type)
-      super(opcode, data, true)
+    def send_frame(opcode, data, mask = true)
+      opcode = type_to_opcode(opcode) if opcode.is_a?(Symbol)
+      super(opcode, data, mask)
     end
 
     def write(data)
@@ -29,8 +29,9 @@ module EventMachine
     end
 
     # Called on a CLOSE frame
-    def close(by_peer = false)
-      super(by_peer)
+    def close(code = 1005, reason = "", origin = :self)
+      origin = :self if origin == :peer # to skip @socket.close
+      super(code, reason, origin)
       @client.unbind
     end
 
