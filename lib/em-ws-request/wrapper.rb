@@ -6,6 +6,7 @@ module EventMachine
       @handshaked = true
       @client = client
       @web_socket_version = version
+      @read_buffer = ''
     end
 
     def send_frame(opcode, data, mask = true)
@@ -18,14 +19,18 @@ module EventMachine
     end
 
     def receive(data)
-      @incoming_data = data
+      @read_buffer << data if data
       super()
     end
 
     def read(num_bytes)
-      str = @incoming_data.slice(0, num_bytes)
-      @incoming_data = @incoming_data[num_bytes..-1]
-      return str
+      if(@read_buffer.size < num_bytes)
+        raise EOFError
+      else
+        str = @read_buffer.slice(0, num_bytes)
+        @read_buffer = @read_buffer[num_bytes..-1]
+        return str
+      end
     end
 
     # Called on a CLOSE frame
