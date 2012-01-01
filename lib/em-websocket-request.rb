@@ -1,5 +1,6 @@
 require 'em-http-request'
 require "em-ws-request/version"
+require "em-ws-request/options"
 require "em-ws-request/client"
 require "em-ws-request/wrapper"
 

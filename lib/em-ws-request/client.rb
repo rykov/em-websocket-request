@@ -1,7 +1,7 @@
 module EventMachine
   class WebsocketConnection < HttpConnection
     def setup_request(method, options = {}, c = nil)
-      c ||= WebsocketClient.new(self, HttpClientOptions.new(@uri, options, method))
+      c ||= WebsocketClient.new(self, WsClientOptions.new(@uri, options, method))
       @deferred ? activate_connection(c) : finalize_request(c)
       c
     end
@@ -30,7 +30,7 @@ module EventMachine
   end
 
   class WebsocketClient < HttpClient
-    PROTOCOL_VERSION = '8'
+    PROTOCOL_VERSION = '13'
 
     def initialize(conn, options)
       super(conn, options)
