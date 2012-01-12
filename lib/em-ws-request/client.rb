@@ -25,6 +25,8 @@ module EventMachine
         client.receive(data)
       else
         super(data)
+        upgrade_data = @p.upgrade_data
+        receive_data(upgrade_data) unless upgrade_data.empty?
       end
     end
   end
