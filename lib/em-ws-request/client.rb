@@ -10,8 +10,9 @@ module EventMachine
       super
       @p.on_message_complete = proc do
         if not client.continue?
-          if client.state == :websocket
+          if client.state == :upgrade
             client.state = :stream
+            client.succeed
           else
             client.state = :finished
             client.on_request_complete
@@ -41,7 +42,7 @@ module EventMachine
 
     def send(data, frame_type = :text)
       @connection = @conn
-      if state == :stream || state == :websocket # FIXME
+      if state == :stream
         @wswrapper.send_frame(frame_type, data)
       end
     end
@@ -85,8 +86,7 @@ module EventMachine
 
           fail "websocket handshake failed (mismatched key)"
         else
-          @state = :websocket
-          succeed
+          @state = :upgrade
         end
       end
     end
@@ -97,7 +97,7 @@ module EventMachine
     end
 
     def unbind(reason = nil)
-      if state == :stream || state == :websocket # FIXME
+      if state == :stream
         @disconnect.call(self) if @disconnect
         on_error(reason) # TODO: Should we really barf on unbind?
       else
