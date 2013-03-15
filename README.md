@@ -29,6 +29,7 @@ request.errback { |*args|
 
 request.callback {
   puts "[websocket] Successfully connected"
+  http.send("Hello there!")
 }
 
 request.disconnect {
@@ -36,6 +37,7 @@ request.disconnect {
 }
 
 request.stream { |chunk, type|
-  process_data(chunk, type)
+  response = process_data(chunk, type)
+  http.send(response)
 }
 ```
