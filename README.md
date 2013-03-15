@@ -1,6 +1,7 @@
 # EventMachine Websocket Client
 
 [![Gem Version](https://badge.fury.io/rb/em-websocket-request.png)](http://badge.fury.io/rb/em-websocket-request)
+[![Build Status](https://travis-ci.org/rykov/em-websocket-request.png?branch=master)](https://travis-ci.org/rykov/em-websocket-request)
 
 This gem implements a WebSocket client inside EventMachine building 
 on top of `em-http-request` and [web-socket-ruby](https://github.com/gimite/web-socket-ruby).
